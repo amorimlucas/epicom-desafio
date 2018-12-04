@@ -14,6 +14,31 @@ module Api
 					render json: {status: 'SUCCESS', message:'SKU foi associado.', data: sku}, status: :ok
 				end
 			end
+
+			def create
+				if params[:tipo] == "criacao_sku" 
+					sku = Sku.create(id: params[:parametros][:idSku], idProduto: params[:parametros][:idProduto])
+					sku.save
+					render json: {status: 'SUCCESS', message:'SKU foi criado.', data: sku}, status: :ok
+				end
+			end
+
+			def show
+				sku = Sku.find(params[:id])
+        		render json: {status: 'SUCCESS', message:'SKU foi extraido.', data: sku}, status: :ok
+			end
+
+			def update
+				sku = Sku.find(params[:id])
+		        sku.update(idProduto: params[:idProduto])
+		        render json: {status: 'SUCCESS', message:'SKU foi atualizado.', data: sku},status: :ok
+			end
+
+			def destroy
+				sku = Sku.find(params[:id])
+		        sku.destroy
+		        render json: {status: 'SUCCESS', message:'SKU deletado.', data: sku},status: :ok
+			end
 		end
 	end
 end
