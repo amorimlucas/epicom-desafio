@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace 'api' do
   	namespace 'v1' do
   		resources :skus
+  		post '/', to: '/api/v1/skus#notification'
   	end
   end
 end
