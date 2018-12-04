@@ -79,4 +79,12 @@ RSpec.describe "Skus", type: :request do
 
     end
 
+    context "testes para requisito 3 do Desafio Epicom" do
+    	it "GET para /api/v1 retorna lista de SKUs disponíveis e entre 10 e 40 reais" do    		
+    		get '/api/v1'
+    		
+			expect(response).to have_http_status(200)
+    	end
+    end
+
 end
