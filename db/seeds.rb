@@ -21,6 +21,6 @@ records = JSON.parse(File.read('db/criacao_sku.json'))
 records.each do |record|
   Sku.create({
   	idProduto: record["parametros"]["idProduto"],
-  	idSku: record["parametros"]["idSku"],
+  	id: record["parametros"]["idSku"],
   })
 end

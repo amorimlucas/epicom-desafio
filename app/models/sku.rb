@@ -1,5 +1,5 @@
 class Sku < ApplicationRecord
 	validates :idProduto, presence: true
-	validates :idSku, presence: true
+	validates :id, presence: true
 
 end
