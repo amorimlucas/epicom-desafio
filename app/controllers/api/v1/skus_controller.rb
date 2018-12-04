@@ -48,7 +48,7 @@ module Api
 
 			def return_filtered_skus
 				filtered_skus = []
-				Sku.limit(20).each do |sku|
+				Sku.limit(10).each do |sku|
 					disponivel_endpoint = "marketplace/produtos/#{sku.idProduto}/skus/#{sku.id}/disponibilidade"
 					url = "https://sandboxmhubapi.epicom.com.br/v1/#{disponivel_endpoint}"
 					uri = URI(url)
@@ -74,8 +74,8 @@ module Api
 					end
 
 				end
-				render json: {status: 'SUCCESS', message:'SKU TEST', data: filtered_skus},status: :ok
-				#data = JSON.parse("[#{filtered_skus.join(', ')}]")
+				data = filtered_skus.to_json
+				render json: data, status: :ok
 				#render json: {status: 'SUCCESS', message:'SKUs disponíveis e entre R$10.0 e R$40.0.', data: data}, status: :ok
 			end
 
