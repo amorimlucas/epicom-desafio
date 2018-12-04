@@ -7,11 +7,14 @@ module Api
 	module V1
 		class SkusController < ApplicationController
 
+			# READ - cRud: Retorna todos arquivos na mesa SKU
 			def index 
 				skus = Sku.all
 				render json: {status: "SUCCESS", message: "Todos SKUs", data: skus}, status: :ok
 			end
 
+			# REQUISITO 1 do Desafio Epicom
+			# Recebe notificações de associação de SKU e atualiza o arquivo na mesa
 			def notification
 				if params[:tipo] == "sku_associado" 
 					sku = Sku.find(params[:parametros][:idSku])
@@ -21,6 +24,7 @@ module Api
 				end
 			end
 
+			# CREATE - Crud: Cria um novo arquivo na mesa SKU
 			def create
 				if params[:tipo] == "criacao_sku" 
 					sku = Sku.create(id: params[:parametros][:idSku], idProduto: params[:parametros][:idProduto])
@@ -29,26 +33,33 @@ module Api
 				end
 			end
 
+			# READ - cRud: Retorna o arquivo da mesa de SKU de acordo com o ID passado 
 			def show
 				sku = Sku.find(params[:id])
         		render json: {status: 'SUCCESS', message:'SKU foi extraido.', data: sku}, status: :ok
 			end
 
+			# UPDATE - crUd: Atualiza o arquivo do ID passado na mesa SKU com os dados passados
 			def update
 				sku = Sku.find(params[:id])
 		        sku.update(idProduto: params[:idProduto])
 		        render json: {status: 'SUCCESS', message:'SKU foi atualizado.', data: sku},status: :ok
 			end
 
+			#DELETE - cruD: Deleta o arquivo do ID passado
 			def destroy
 				sku = Sku.find(params[:id])
 		        sku.destroy
 		        render json: {status: 'SUCCESS', message:'SKU deletado.', data: sku},status: :ok
 			end
 
+			# REQUISITO 3 do Desafio Epicom
+			# Retorna em formato JSON todos arquivos da mesa local SKU que estão 
+			# disponíveis e come preço entre 10.00 e 40.00 reais
+			# Os dados de disponibilidade e preço são puxados do API sandboxmhubapi.epicom.com.br/v1/marketplace
 			def return_filtered_skus
 				filtered_skus = []
-				Sku.limit(10).each do |sku|
+				Sku.all.each do |sku|
 					disponivel_endpoint = "marketplace/produtos/#{sku.idProduto}/skus/#{sku.id}/disponibilidade"
 					url = "https://sandboxmhubapi.epicom.com.br/v1/#{disponivel_endpoint}"
 					uri = URI(url)
