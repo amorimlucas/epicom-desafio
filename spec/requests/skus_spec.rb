@@ -9,16 +9,17 @@ RSpec.describe "Skus", type: :request do
    	end
 
     context "testes para requisito 1 do Desafio Epicom" do
-    	let(:params) do {tipo: "sku_associado", dataEnvio: "2015-07-14T13:56:36", parametros: {idProduto: 100, idSku: 200}} end
-		let(:headers) do { CONTENT_TYPE: "application/json" } end
-		let(:sku1) do  
-			Sku.create id: 200, idProduto: 50 
+    	params = {"tipo" => "sku_associado", "dataEnvio" => "2015-07-14T13:56:36", "parametros" => {"idProduto" => 100, "idSku" => 5}}
+		#let(:headers) do { CONTENT_TYPE: "application/json" } end
+		headers = { "CONTENT_TYPE" => "application/json" }
+		before do  
+			@sku1 = Sku.create id: 5, idProduto: 50 
 		end
     	it "POST notificação para /api/v1" do
-    		post api_v1_path, params, headers
+    		post api_v1_path, params: params
     		
 			expect(response).to have_http_status(200)
-			expect(test_sku.reload.parametros.idProduto).to eq (200)
+			expect(@sku1.reload.idProduto).to eq (100)
     	end
 
     end

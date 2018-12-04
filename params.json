@@ -1,0 +1,8 @@
+{
+  "tipo": "sku_associado",
+  "dataEnvio": "2015-07-14T13:56:36",
+  "parametros": {
+    "idProduto": 100,
+    "idSku": 322358
+  }
+}
