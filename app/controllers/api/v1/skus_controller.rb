@@ -11,7 +11,7 @@ module Api
 					sku = Sku.find(params[:parametros][:idSku])
 					sku.update(idProduto: params[:parametros][:idProduto])
 					sku.save
-					render status: :ok
+					render json: {status: 'SUCCESS', message:'SKU foi associado.', data: sku}, status: :ok
 				end
 			end
 		end

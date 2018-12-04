@@ -21,6 +21,61 @@ RSpec.describe "Skus", type: :request do
 			expect(response).to have_http_status(200)
 			expect(@sku1.reload.idProduto).to eq (100)
     	end
+    end
+
+    context "testes para requisito 2 do Desafio Epicom" do
+    	
+    	it "CREATE: POST para /api/v1/skus" do
+    		params = {"tipo": "criacao_sku", "dataEnvio": "2015-08-18T20:51:22", "parametros": {"idProduto": 270666,"idSku": 322666}}
+    		headers = { "CONTENT_TYPE" => "application/json" }
+    		post '/api/v1/skus', params: params
+    		
+			expect(response).to have_http_status(200)
+			sku = Sku.find(322666)
+			expect(sku.blank?).to eq (false)
+			expect(sku.idProduto).to eq (270666)
+    	end
+
+    	before do  
+			@sku2 = Sku.create id: 6, idProduto: 51
+		end
+
+    	it "READ: GET para /api/v1/skus/:id" do
+    		params = {"id": 6}
+    		headers = { "CONTENT_TYPE" => "application/json" }
+
+    		get '/api/v1/skus/6'
+    		
+			expect(response).to have_http_status(200)
+			data = JSON.parse(response.body);
+			expect(data["parametros"]["idProduto"]).to eq (51)
+    	end
+
+    	before do  
+			@sku3 = Sku.create id: 7, idProduto: 52
+		end
+    	
+    	it "UPDATE: PUT para /api/v1/skus/:id" do
+    		params = {"idProduto" => 101, "id" => 7}
+    		headers = { "CONTENT_TYPE" => "application/json" }
+    		
+    		put '/api/v1/skus/7', params: params
+    		
+			expect(response).to have_http_status(200)
+			expect(@sku3.reload.idProduto).to eq (101)
+    	end
+
+    	before do  
+			@sku4 = Sku.create id: 8, idProduto: 53
+		end
+
+    	it "DELETE: DELETE para /api/v1/skus/:id" do    		
+    		delete '/api/v1/skus/8'
+    		
+			expect(response).to have_http_status(200)
+			expect(@sku4.reload.blank?).to eq (true)
+    	end
 
     end
+
 end
